@@ -3,6 +3,7 @@ require("dotenv").config();
 var Spotify = require('node-spotify-api');
 var axios = require("axios");
 var keys = require("./keys.js");
+var moment = require("moment");
 
 
 // capture the command that the user puts in (process.argv[2])
@@ -62,7 +63,7 @@ switch(command) {
                 function(response) {
 
                     for (let i = 0; i < response.data.length; i++) {
-                        console.log("Where: " + response.data[i].venue.name + ": " + response.data[i].venue.city + ", "  + response.data[i].venue.region + " " + response.data[i].venue.country + "  - When: " + response.data[i].datetime);
+                        console.log("Where: " + response.data[i].venue.name + ": " + response.data[i].venue.city + ", "  + response.data[i].venue.region + " " + response.data[i].venue.country + "  - When: " + moment(response.data[i].datetime).format("MM/DD/YYYY"));
                     }
             
                     // console.log(response.data);
