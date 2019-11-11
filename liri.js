@@ -10,8 +10,6 @@ var moment = require("moment");
 
 let command = process.argv[2];
 
-
-
 // capture the user's search term (process.argv index 3 and later) (*use activity 18 level 2 for guidance on how to capture this!*)
 
 var nodeArgs = process.argv;
@@ -32,6 +30,10 @@ function doTheThing(command) {
 
 switch(command) {
     case "spotify-this-song":
+
+        if (userInput === "") {
+            userInput = "never gonna give you up"
+        }
 
             var spotify = new Spotify(keys.spotify);
             console.log("");
@@ -55,12 +57,20 @@ switch(command) {
         break;
 
     case "concert-this":
+
+            if (userInput === "") {
+                userInput = "Piebald"
+            }
+
             console.log("");
             console.log("***************Ah, concert info you seek?***************");
             console.log("");
             let query = "https://rest.bandsintown.com/artists/" + userInput + "/events/?app_id=codingbootcamp";
             axios.get(query).then(
                 function(response) {
+
+                    console.log("== Current Tour Dates for " + response.data[0].artist.name + " ==");
+                    console.log("");
 
                     for (let i = 0; i < response.data.length; i++) {
                         console.log("Where: " + response.data[i].venue.name + ": " + response.data[i].venue.city + ", "  + response.data[i].venue.region + " " + response.data[i].venue.country + "  - When: " + moment(response.data[i].datetime).format("MM/DD/YYYY"));
@@ -71,6 +81,11 @@ switch(command) {
         break;
 
     case "movie-this":
+
+            if(userInput === "") {
+                userInput = "body of evidence"
+            }
+                
             console.log("");
             console.log("***************Ah, movie info you seek?***************");
             console.log("");
