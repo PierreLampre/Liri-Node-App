@@ -3,7 +3,6 @@ require("dotenv").config();
 var Spotify = require('node-spotify-api');
 var axios = require("axios");
 var keys = require("./keys.js");
-var spotify = new Spotify(keys.spotify);
 
 
 // capture the command that the user puts in (process.argv[2])
@@ -32,9 +31,26 @@ function doTheThing(command) {
 
 switch(command) {
     case "spotify-this-song":
+
+            var spotify = new Spotify(keys.spotify);
             console.log("");
             console.log("***************Ah, music info you seek?***************");
             console.log("");
+            spotify.search({ type: 'track', query: userInput, limit: 5 }, function(err, data) {
+                if (err) {
+                  return console.log('Error occurred: ' + err);
+                }
+            for (let i = 0; i < data.tracks.items.length; i++) {
+              console.log("-------------------------------------------------------")
+              console.log("Artist: " + data.tracks.items[i].album.artists[0].name);
+              console.log("Track Name: " + data.tracks.items[i].name);
+              console.log("Preview URL: " + data.tracks.items[i].preview_url);
+              console.log("Album: " + data.tracks.items[i].album.name); 
+              console.log("-------------------------------------------------------")
+            }
+           
+              
+              });
         break;
 
     case "concert-this":
@@ -87,40 +103,6 @@ switch(command) {
 
 doTheThing(command);
 
-
-// check if userCommand is "concert-this"
-  // run an API call using axios to the bands-in-town API
-  // inject the user's search term in the queryURL
-
-  // Display name of venue, venue location, and the date of the event 
-  // Format the date of the event to be MM/DD/YYYY (look at the moment node package documentation!)
-
-// check if userCommand is "spotify-this-song"
-  // Using Spotify Node package info and documentation, make a call to the Spotify API using the user's search term
-
-  // Display to the user:
-  // * Artist(s)
-  // * The song's name
-  // * A preview link of the song from Spotify
-  // * The album that the song is from
-
-  // Provide a default searchTerm if the user didn't provide an argument
-
-// check if userCommand is "movie-this"
-
-  // Use Axios to call the OMDB API using the user's search term. Use activities 17 and 18 as a reference!
-
-  // Display to the user:
-  // * Title of the movie.
-  // * Year the movie came out.
-  // * IMDB Rating of the movie.
-  // * Rotten Tomatoes Rating of the movie.
-  // * Country where the movie was produced.
-  // * Language of the movie.
-  // * Plot of the movie.
-  // * Actors in the movie.
-
-  // Provide a default search if the user didn't provide an argument.
 
 // check if userCommand is "do-what-it-says" (DO THIS PART OF THE ASSIGNMENT ONLY IF THE OTHER THREE API CALLS WORK WELL!)
 
