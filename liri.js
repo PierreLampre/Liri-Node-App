@@ -4,6 +4,7 @@ var Spotify = require('node-spotify-api');
 var axios = require("axios");
 var keys = require("./keys.js");
 var moment = require("moment");
+var fs = require("fs");
 
 
 // capture the command that the user puts in (process.argv[2])
@@ -26,10 +27,14 @@ for(var i = 3; i < nodeArgs.length; i++) {
 
 // Make a switch statement for the four commands. The default case should tell the user to try again.
 
-function doTheThing(command) {
+let dataArr;
+
+function runTheProgram(command) {
 
 switch(command) {
     case "spotify-this-song":
+
+   function heyHeySpotify(userInput) {
 
         if (userInput === "") {
             userInput = "never gonna give you up"
@@ -54,6 +59,10 @@ switch(command) {
            
               
               });
+    
+        }
+
+        heyHeySpotify(userInput);
         break;
 
     case "concert-this":
@@ -108,6 +117,20 @@ switch(command) {
 
     case "do-what-it-says":
 
+
+            fs.readFile("random.txt", "utf8", function(error, data) {
+
+                if (error) {
+                  return console.log(error);
+                }
+
+                dataArr = data.split(",");
+                console.log(dataArr);
+                heyHeySpotify(dataArr[1]);
+
+              });
+              
+
         break;
 
     default:
@@ -117,13 +140,4 @@ switch(command) {
 
 }
 
-doTheThing(command);
-
-
-// check if userCommand is "do-what-it-says" (DO THIS PART OF THE ASSIGNMENT ONLY IF THE OTHER THREE API CALLS WORK WELL!)
-
-  // Use "fs" to read the random.txt file (hint, you will need to require fs! Look at activities 12 and 13)
-  // The command will be whatever is before the comma. The search term will be whatever is after the comma.
-  // Make the corresponding API call depending on what the command is.
-
-// If the user doesn't provide 1 of the 4 recognizable commands, display message to the user to try again
+runTheProgram(command);
