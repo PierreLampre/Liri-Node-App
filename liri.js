@@ -16,9 +16,9 @@ let command = process.argv[2];
 var nodeArgs = process.argv;
 var userInput = "";
 
-for(var i = 3; i < nodeArgs.length; i++) {
+for (var i = 3; i < nodeArgs.length; i++) {
     // userInput = userInput + nodeArgs[i];
-    if(i > 3) {
+    if (i > 3) {
         userInput += "+" + nodeArgs[i];
     } else {
         userInput += nodeArgs[i];
@@ -31,44 +31,65 @@ let dataArr;
 
 function runTheProgram(command) {
 
-switch(command) {
-    case "spotify-this-song":
+    switch (command) {
+        case "spotify-this-song":
 
-   function heyHeySpotify(userInput) {
+            function heyHeySpotify(userInput) {
 
-        if (userInput === "") {
-            userInput = "never gonna give you up"
-        }
-
-            var spotify = new Spotify(keys.spotify);
-            console.log("");
-            console.log("***************Ah, music info you seek?***************");
-            console.log("");
-            spotify.search({ type: 'track', query: userInput, limit: 5 }, function(err, data) {
-                if (err) {
-                  return console.log('Error occurred: ' + err);
+                if (userInput === "") {
+                    userInput = "never gonna give you up"
+                    console.log("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
+                    console.log("PSSSST OVER HERE. Hey Champ, that last search didn't have a value.");
+                    console.log("If your syntax is 'node liri.js spotify-this-song <name of song here>',")
+                    console.log("this whole thing will work a lot better. Here's an example of how it would");
+                    console.log("have gone if you typed 'never gonna give you up' as the song -MGMT");
+                    console.log("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
                 }
-            for (let i = 0; i < data.tracks.items.length; i++) {
-              console.log("-------------------------------------------------------")
-              console.log("Artist: " + data.tracks.items[i].album.artists[0].name);
-              console.log("Track Name: " + data.tracks.items[i].name);
-              console.log("Preview URL: " + data.tracks.items[i].preview_url);
-              console.log("Album: " + data.tracks.items[i].album.name); 
-              console.log("-------------------------------------------------------")
+
+
+
+                var spotify = new Spotify(keys.spotify);
+                console.log("");
+                console.log("***************Ah, music info you seek?***************");
+                console.log("");
+                spotify.search({ type: 'track', query: userInput, limit: 5 }, function (err, data) {
+                    if (err) {
+                        return console.log('Error occurred: ' + err);
+                    }
+
+                    if (data.tracks.items.length === 0) {
+                        console.log("Invalid search, try again after you've slept it off.");
+                    }
+
+                    for (let i = 0; i < data.tracks.items.length; i++) {
+
+                        console.log("-------------------------------------------------------")
+                        console.log("Artist: " + data.tracks.items[i].album.artists[0].name);
+                        console.log("Track Name: " + data.tracks.items[i].name);
+                        console.log("Preview URL: " + data.tracks.items[i].preview_url);
+                        console.log("Album: " + data.tracks.items[i].album.name);
+                        console.log("-------------------------------------------------------")
+                    }
+                  
+
+                });
+
             }
-           
-              
-              });
-    
-        }
 
-        heyHeySpotify(userInput);
-        break;
+            heyHeySpotify(userInput);
+            break;
 
-    case "concert-this":
+        case "concert-this":
 
             if (userInput === "") {
-                userInput = "Piebald"
+                userInput = "Piebald";
+                
+                console.log("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
+                console.log("PSSSST OVER HERE. Hey Champ, that last search didn't have a value.");
+                console.log("If your syntax is 'node liri.js concert-this <name of artist here>',")
+                console.log("this whole thing will work a lot better. Here's an example of how it would");
+                console.log("have gone if you typed 'Piebald' as the artist -MGMT");
+                console.log("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
             }
 
             console.log("");
@@ -76,25 +97,32 @@ switch(command) {
             console.log("");
             let query = "https://rest.bandsintown.com/artists/" + userInput + "/events/?app_id=codingbootcamp";
             axios.get(query).then(
-                function(response) {
+                function (response) {
 
                     console.log("== Current Tour Dates for " + response.data[0].artist.name + " ==");
                     console.log("");
 
                     for (let i = 0; i < response.data.length; i++) {
-                        console.log("Where: " + response.data[i].venue.name + ": " + response.data[i].venue.city + ", "  + response.data[i].venue.region + " " + response.data[i].venue.country + "  - When: " + moment(response.data[i].datetime).format("MM/DD/YYYY"));
+                        console.log("Where: " + response.data[i].venue.name + ": " + response.data[i].venue.city + ", " + response.data[i].venue.region + " " + response.data[i].venue.country + "  - When: " + moment(response.data[i].datetime).format("MM/DD/YYYY"));
                     }
-            
+
                     // console.log(response.data);
+
                 })
-        break;
+            break;
 
-    case "movie-this":
+        case "movie-this":
 
-            if(userInput === "") {
+            if (userInput === "") {
                 userInput = "body of evidence"
+                console.log("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
+                console.log("PSSSST OVER HERE. Hey Champ, that last search didn't have a value.");
+                console.log("If your syntax is 'node liri.js movie-this <name of movie here>',")
+                console.log("this whole thing will work a lot better. Here's an example of how it would");
+                console.log("have gone if you typed 'body of evidence' as the movie -MGMT");
+                console.log("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/")
             }
-                
+
             console.log("");
             console.log("***************Ah, movie info you seek?***************");
             console.log("");
@@ -102,41 +130,47 @@ switch(command) {
             // console.log("this is the url: " + queryUrl);
             // console.log("this is the argument: " + userInput);
             axios.get(queryUrl).then(
-                function(response) {
-                console.log("The title of the movie is " + response.data.Title);
-                console.log("The release year of the movie is " + response.data.Year);
-                console.log("The IMDB Rating of the movie is " + response.data.imdbRating);
-                console.log("The Rotten Tomatoes score of the movie is " +response.data.Ratings[1].Value);
-                console.log("The country the movie was produced in is " + response.data.Country);
-                console.log("The languages in the movie are " + response.data.Language);
-                console.log("The plot of the movie is: " + response.data.Plot);
-                console.log("The actors in the movie are " + response.data.Actors);
+                function (response) {
+
+                    if (response.data.Title === undefined) {
+                        console.log("Invalid search, try again after you've slept it off.");
+                    } else {
+                    
+                    console.log("The title of the movie is " + response.data.Title);
+                    console.log("The release year of the movie is " + response.data.Year);
+                    console.log("The IMDB Rating of the movie is " + response.data.imdbRating);
+                    console.log("The Rotten Tomatoes score of the movie is " + response.data.Ratings[1].Value);
+                    console.log("The country the movie was produced in is " + response.data.Country);
+                    console.log("The languages in the movie are " + response.data.Language);
+                    console.log("The plot of the movie is: " + response.data.Plot);
+                    console.log("The actors in the movie are " + response.data.Actors);
+                    }
                 })
 
-        break;
+            break;
 
-    case "do-what-it-says":
+        case "do-what-it-says":
 
 
-            fs.readFile("random.txt", "utf8", function(error, data) {
+            fs.readFile("random.txt", "utf8", function (error, data) {
 
                 if (error) {
-                  return console.log(error);
+                    return console.log(error);
                 }
 
                 dataArr = data.split(",");
                 console.log(dataArr);
                 heyHeySpotify(dataArr[1]);
 
-              });
-              
+            });
 
-        break;
 
-    default:
-        console.log("Liri-Bot Says: Type better next time, Sgt. Clumsy Fingers.");
-        break;
-}
+            break;
+
+        default:
+            console.log("Liri-Bot Says: Type better next time, Sgt. Clumsy Fingers.");
+            break;
+    }
 
 }
 
